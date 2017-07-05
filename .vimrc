@@ -26,7 +26,7 @@ set vb                            " enable visual bell (disable audio bell)
 set ruler                         " show row and column in footer
 set scrolloff=2                   " minimum lines above/below cursor
 set laststatus=2                  " always show status bar
-set list listchars=tab:»·,trail:· " show extra space characters
+"set list listchars=tab:»·,trail:· " show extra space characters
 set nofoldenable                  " disable code folding
 set clipboard=unnamed             " use the system clipboard
 set wildmenu                      " enable bash style tab completion
@@ -37,6 +37,8 @@ set linespace=8
 set splitright
 "remove any gui in macvim
 set guioptions=
+"set true color
+set termguicolors
 runtime macros/matchit.vim        " use % to jump between start/end of methods
 
 let g:gitgutter_sign_modified = '•'
@@ -64,7 +66,7 @@ let g:lightline = {
   \ }
 
 " set dark background and color scheme
-colorscheme dracula
+colorscheme nord
 " set up some custom coloro
 highlight clear SignColumn
 highlight StatusLineNC ctermbg=238 ctermfg=0
@@ -124,11 +126,12 @@ imap <F1> <nop>
 
 " Map space
 " unmap ex mode: 'Type visual to go into Normal mode.'
-
 nnoremap Q <nop>
 
 " fast saving
 map <leader>w :w!<cr>
+" ack to current cursor
+noremap <Leader>a :Ack <cword><cr>
 
 " map . in visual mode
 vnoremap . :norm.<cr>
@@ -157,7 +160,6 @@ map <F5> :setlocal spell! spelllang=en_us<cr>
 imap <F5> <ESC>:setlocal spell! spelllang=en_us<cr>
 "macvim specific command
 if has("gui_macvim")
-
   " autochange folder to current buffer
   "http://vim.wikia.com/wiki/Set_working_directory_to_the_current_file
   autocmd BufEnter * if expand("%:p:h") !~ '/^tmp|^eq' | silent! lcd %:p:h | endif
@@ -176,9 +178,12 @@ if has("gui_macvim")
   noremap <D-0> :tablast<CR>
 endif
 
+" vim-go specific command
+let g:go_highlight_functions = 1
+let g:go_highlight_fields = 1
+
 " add :Plain command for converting text to plaintext
 command! Plain execute "%s/’/'/ge | %s/[“”]/\"/ge | %s/—/-/ge"
-
 
 " jump to last position in file
 autocmd BufReadPost *
@@ -202,5 +207,4 @@ map <leader>n :call RenameFile()<cr>
 function! JSONPrettify()
   exec ':%!python3 -m json.tool'
 endfunction
-
 
